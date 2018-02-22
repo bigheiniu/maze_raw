@@ -16,11 +16,12 @@ class PathFindingGame(object):
         3 = goal
     """
 
-    def __init__(self, width=15, height=15, seed=None):
+    def __init__(self, width=15, height=15, grid_type="free", seed=None):
         self.width = width
         self.height = height
         self.shape = (width, height)
 
+        self.grid_type = grid_type
         self.seed = seed
 
         self.reset()
@@ -32,10 +33,7 @@ class PathFindingGame(object):
 
         self.terminal = False
 
-        self.grid = np.zeros(self.shape, dtype=np.int8)
-        # Add borders
-        self.grid[0, :] = self.grid[-1, :] = 1
-        self.grid[:, 0] = self.grid[:, -1] = 1
+        self.grid = generate_grid(self.shape, type=self.grid_type)
 
         self.player, self.target = self.spawn_players()
 
@@ -49,7 +47,6 @@ class PathFindingGame(object):
 
         player_spawn, target_spawn = self.rng.sample(free_positions, 2)
 
-        np.max()
         return player_spawn, target_spawn
 
     def get_state(self):
@@ -81,7 +78,21 @@ class PathFindingGame(object):
 
     def step_return(self, reward):
         return self.get_state(), reward, self.terminal, ""
-        
+
+
+def generate_grid(shape, type="free"):
+    """ generate a grid
+    type : {"free", "obstruct", "maze") """
+
+    grid = np.zeros(shape, dtype=np.int8)
+
+    # Add borders
+    grid[0, :] = grid[-1, :] = 1
+    grid[:, 0] = grid[:, -1] = 1
+
+    return grid
+
+
 # North, South, East, West
 MOUVEMENT = [(0, -1), (0, 1), (1, 0), (-1, 0)]
 
