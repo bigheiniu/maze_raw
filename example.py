@@ -14,7 +14,8 @@ if __name__ == '__main__':
 
 
     env_list = [
-        "maze-arr-9x9-full-deterministic-v0",
+        "maze-arr-9x9-deterministic-v0",
+        # "maze-coucou-v0",
         #"maze-arr-11x11-full-deterministic-v0",
         #"maze-arr-13x13-full-deterministic-v0",
         #"maze-arr-15x15-full-deterministic-v0",

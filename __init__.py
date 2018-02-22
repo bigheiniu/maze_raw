@@ -1,1 +1,1 @@
-import gym_pathfinding.envs
+import gym_pathfinding
