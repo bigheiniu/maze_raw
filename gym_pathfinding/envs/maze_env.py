@@ -51,14 +51,18 @@ def create_maze_env(id, name, width, height, state_type, seed=None, full_determi
 # Create Classes 
 
 sizes = list(range(9, 20, 2)) + [25, 35, 55]
-envs = chain(
+envs = list(chain(
     [create_maze_env("maze-arr-{i}x{i}-full-deterministic-v0".format(i=i), "MazeArrFull{i}x{i}Env".format(i=i), i, i, "array", 1337, full_deterministic=True) for i in sizes],
     [create_maze_env("maze-img-{i}x{i}-full-deterministic-v0".format(i=i), "MazeImgFull{i}x{i}Env".format(i=i), i, i, "image", 1337, full_deterministic=True) for i in sizes],
     [create_maze_env("maze-arr-{i}x{i}-deterministic-v0".format(i=i), "MazeArr{i}x{i}Env".format(i=i), i, i, "array", 1337) for i in sizes],
     [create_maze_env("maze-img-{i}x{i}-deterministic-v0".format(i=i), "MazeImg{i}x{i}Env".format(i=i), i, i, "image", 1337) for i in sizes],
     [create_maze_env("maze-arr-{i}x{i}-stochatic-v0".format(i=i), "MazeArrRnd{i}x{i}Env".format(i=i), i, i, "array") for i in sizes],
     [create_maze_env("maze-img-{i}x{i}-stochatic-v0".format(i=i), "MazeImgRnd{i}x{i}Env".format(i=i), i, i, "image") for i in sizes],
-)
+))
 
 for env_class in envs:
     globals()[env_class.__name__] = env_class
+
+def get_env_classes():
+    return envs
+    
