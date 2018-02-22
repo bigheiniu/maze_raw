@@ -5,7 +5,7 @@ logger = logging.getLogger('cair_maze')
 logger.setLevel(logging.DEBUG)
 
 
-fh = logging.FileHandler('maze_%s.log' % int(time.time()))
+fh = logging.FileHandler('log/maze_%s.log' % int(time.time()))
 fh.setLevel(logging.DEBUG)
 
 ch = logging.StreamHandler()
