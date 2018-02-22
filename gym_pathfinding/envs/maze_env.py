@@ -4,7 +4,7 @@ from gym import error, spaces, utils
 from gym.utils import seeding
 import numpy as np
 import random
-from gym_maze.envs.maze import MazeGame
+from gym_pathfinding.games.maze import MazeGame
 
 
 class MazeEnv(gym.Env):

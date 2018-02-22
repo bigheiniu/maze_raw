@@ -1,1 +1,1 @@
-import gym_maze.envs
+import gym_pathfinding.envs

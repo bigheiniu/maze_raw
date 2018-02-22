@@ -1,5 +1,5 @@
 import gym
-import gym_maze
+import gym_pathfinding
 import numpy as np
 import json
 from example.logger import logger

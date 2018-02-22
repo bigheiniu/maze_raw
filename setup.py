@@ -1,7 +1,7 @@
 from setuptools import setup
 
-setup(name='gym_maze',
+setup(name='gym_pathfinding',
       version='0.0.1',
       install_requires=['gym', 'cython', 'numpy', 'scipy', 'pygame'],
-      packages=['gym_maze', 'gym_maze.envs']
+      packages=['gym_pathfinding', 'gym_pathfinding.envs']
       )
