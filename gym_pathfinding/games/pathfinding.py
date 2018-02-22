@@ -51,7 +51,7 @@ class PathFindingGame(object):
 
         target_spawn, player_spawn = self.rng.sample(free_positions, 2)
 
-        self.optimal_path_length, self.optimal_path = self.dfs(player_spawn, target_spawn)
+        # self.optimal_path_length, self.optimal_path = self.dfs(player_spawn, target_spawn)
 
         return player_spawn, target_spawn
 
@@ -83,33 +83,34 @@ class PathFindingGame(object):
         return self.step_return(-0.01)
 
     def step_return(self, reward):
-        return self.get_state(), reward, self.terminal, {"optimal_path": self.optimal_path_length}
+        return self.get_state(), reward, self.terminal, {}
+        #{"optimal_path": self.optimal_path_length}
 
 
     def is_legal(self, next_x, next_y):
         return self.grid[next_x, next_y] == 0
 
 
-    def dfs(self, start, goal):
-        stack = [(start, [start])]
+    # def dfs(self, start, goal):
+    #     stack = [(start, [start])]
 
-        possible_path = PriorityQueue()
+    #     possible_path = PriorityQueue()
 
-        while stack:
-            (vertex, path) = stack.pop()
-            legal_cells = set(self.legal_directions(*vertex)) - set(path)
-            for next in legal_cells:
-                if next == goal:
-                    full_path = path + [next]
-                    length = len(path)
-                    possible_path.put((length, full_path))
-                else:
-                    stack.append((next, path + [next]))
+    #     while stack:
+    #         (vertex, path) = stack.pop()
+    #         legal_cells = set(self.legal_directions(*vertex)) - set(path)
+    #         for next in legal_cells:
+    #             if next == goal:
+    #                 full_path = path + [next]
+    #                 length = len(path)
+    #                 possible_path.put((length, full_path))
+    #             else:
+    #                 stack.append((next, path + [next]))
 
-        return possible_path.get()
+    #     return possible_path.get()
 
-    def legal_directions(self, posx, posy):
-        possible_moves = [(posx + dx, posy + dy) for dx, dy in self.MOUVEMENT]
-        return [(next_x, next_y) for next_x, next_y in possible_moves if self.is_legal(next_x, next_y)]
+    # def legal_directions(self, posx, posy):
+    #     possible_moves = [(posx + dx, posy + dy) for dx, dy in self.MOUVEMENT]
+    #     return [(next_x, next_y) for next_x, next_y in possible_moves if self.is_legal(next_x, next_y)]
 
 

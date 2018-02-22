@@ -1,13 +1,13 @@
 import pygame
 import numpy as np
 import gym
+from gym import error, spaces, utils
 
 from gym_pathfinding.games.pathfinding import PathFindingGame
 
 
 class PathFindingEnv(gym.Env):
     metadata = {'render.modes': ['human', 'array']}
-    id = "pathfinding-v0"
 
     def __init__(self, width, height, screen_width=640, screen_height=480, seed=None):
         self.game = PathFindingGame(width, height, seed)
@@ -15,6 +15,9 @@ class PathFindingEnv(gym.Env):
         self.screen_width = screen_width
         self.screen_height = screen_height
         self.render_init = False
+        
+        self.observation_space = spaces.MultiDiscrete(self.game.get_state().shape)
+        self.action_space = spaces.Discrete(4)
     
     def reset(self):
         return self.game.reset()
@@ -37,13 +40,13 @@ class PathFindingEnv(gym.Env):
             print(self.game.get_state())
 
     def close(self):
-        self.game.quit()
+        try:
+            pygame.display.quit()
+            pygame.quit()
+        except:
+            pass
 
-
-
-
-
-    def init_render():
+    def init_render(self):
         pygame.init()
         pygame.font.init()
         pygame.display.set_caption("PathFindingGame")
@@ -53,15 +56,15 @@ class PathFindingEnv(gym.Env):
         self.surface = pygame.Surface(self.screen.get_size())
         self.surface = self.surface.convert()
         self.surface.fill((255, 255, 255))
-        self.tile_w = (self.screen_width + 5) / width
-        self.tile_h = (self.screen_height + 5) / height
+        self.tile_w = (self.screen_width + 5) / self.game.width
+        self.tile_h = (self.screen_height + 5) / self.game.height
 
     def draw(self):
 
         self.surface.fill((0, 0, 0))
         
         for (x, y), value in np.ndenumerate(self.game.get_state()):
-            quad = self.screen_position(x, y)
+            quad = self.screen_quad_position(x, y)
             color = self.get_color(value)
 
             pygame.draw.rect(self.surface, color, quad)
