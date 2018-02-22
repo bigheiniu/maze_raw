@@ -1,7 +1,11 @@
+# gym-pathfinding
+
+A gym implementation for the pathfinding problem.
+
 ## Installation
 ```bash
 git clone [url_repo]
-cd gym_pathfinding
+cd gym-pathfinding
 pip install .
 ```
 
@@ -14,9 +18,9 @@ from time import sleep
 env = gym.make('pathfinding-9x9-v0')
 
 for epoch in range(10):
-    env.reset()
+    s = env.reset()
     
-    for i in range(50):
+    for timestep in range(50):
         env.render()
         sleep(0.05)
         
@@ -28,6 +32,11 @@ for epoch in range(10):
 env.close()
 ```
 
+## Environnement
+
+
+## Information
+The initiale project come from https://github.com/cair/gym-maze
 
 ## Licence
 Copyright 2017 Per-Arne Andersen
