@@ -1,116 +1,33 @@
-# Maze environment for GYM
-![Deterministic Environments](https://github.com/UIA-CAIR/gym-maze/blob/master/deterministic_environments.png)
-
 ## Installation
 ```bash
-pip install git+https://github.com/CAIR-UIA/gym-maze.git
+git clone [url_repo]
+cd gym_pathfinding
+pip install .
 ```
 
 ## Basic Usage
 ```python
 import gym
-import gym_maze # This is required in order to load gym-maze
-import os
+import gym_pathfinding
+from time import sleep
 
-if __name__ == '__main__':
+env = gym.make('pathfinding-9x9-v0')
+
+for epoch in range(10):
+    env.reset()
     
+    for i in range(50):
+        env.render()
+        sleep(0.05)
+        
+        s, r, done, _ = env.step(env.action_space.sample())
 
-    # Reset environment
-    env = gym.make("maze-arr-11x11-full-deterministic-v0")
-    s = env.reset()
+        if done:
+            break
 
-    # Set terminal state to false
-    terminal = False
-
-    while not terminal:
-        # Draw environment on screen
-        env.render()  # For image you MUST call this
-
-        # Draw action from distribution
-        a = env.action_space.sample()
-
-        # Perform action in environment
-        s1, r, t, _ = env.step(a)
-        terminal = t
-
-        s = s1
+env.close()
 ```
 
-## Available Environments
-There are several configurations available for gym-maze.
-
-### Naming Convention
-[name]-[representation]-[size_w]x[size_h]-[type]-v0
-
-**name** - Name of the environment
-
-**representation** - How the state is represented to the user. 'Img' delivers a **84x84x3** state while 'Arr' delivers size of the game board (9x9 game delivers  9x9 state)
-
-**size_w** - Indicates width of game board
-
-**size_h** - Indicates height of game board
-
-**type** - Indicates weither RNG is deterministic (non-random) or stochastic (random). There is also a full-random mode that also remove randomness from spawn location
-
-
-### Environment List
-```
-maze-arr-11x11-deterministic-v0
-maze-arr-13x13-deterministic-v0
-maze-arr-15x15-deterministic-v0
-maze-arr-17x17-deterministic-v0
-maze-arr-19x19-deterministic-v0
-maze-arr-25x25-deterministic-v0
-maze-arr-35x35-deterministic-v0
-maze-arr-55x55-deterministic-v0
-maze-arr-9x9-deterministic-v0
-maze-arr-11x11-full-deterministic-v0
-maze-arr-13x13-full-deterministic-v0
-maze-arr-15x15-full-deterministic-v0
-maze-arr-17x17-full-deterministic-v0
-maze-arr-19x19-full-deterministic-v0
-maze-arr-25x25-full-deterministic-v0
-maze-arr-35x35-full-deterministic-v0
-maze-arr-55x55-full-deterministic-v0
-maze-arr-9x9-full-deterministic-v0
-maze-arr-11x11-stochastic-v0
-maze-arr-13x13-stochastic-v0
-maze-arr-15x15-stochastic-v0
-maze-arr-17x17-stochastic-v0
-maze-arr-19x19-stochastic-v0
-maze-arr-25x25-stochastic-v0
-maze-arr-35x35-stochastic-v0
-maze-arr-55x55-stochastic-v0
-maze-arr-9x9-stochastic-v0
-maze-v0
-maze-img-11x11-deterministic-v0
-maze-img-13x13-deterministic-v0
-maze-img-15x15-deterministic-v0
-maze-img-17x17-deterministic-v0
-maze-img-19x19-deterministic-v0
-maze-img-25x25-deterministic-v0
-maze-img-35x35-deterministic-v0
-maze-img-55x55-deterministic-v0
-maze-img-9x9-deterministic-v0
-maze-img-11x11-full-deterministic-v0
-maze-img-13x13-full-deterministic-v0
-maze-img-15x15-full-deterministic-v0
-maze-img-17x17-full-deterministic-v0
-maze-img-19x19-full-deterministic-v0
-maze-img-25x25-full-deterministic-v0
-maze-img-35x35-full-deterministic-v0
-maze-img-55x55-full-deterministic-v0
-maze-img-9x9-full-deterministic-v0
-maze-img-11x11-stochastic-v0
-maze-img-13x13-stochastic-v0
-maze-img-15x15-stochastic-v0
-maze-img-17x17-stochastic-v0
-maze-img-19x19-stochastic-v0
-maze-img-25x25-stochastic-v0
-maze-img-35x35-stochastic-v0
-maze-img-55x55-stochastic-v0
-maze-img-9x9-stochastic-v0
-```
 
 ## Licence
 Copyright 2017 Per-Arne Andersen
