@@ -9,11 +9,11 @@ from gym_pathfinding.games.pathfinding import PathFindingGame
 class PathFindingEnv(gym.Env):
     metadata = {'render.modes': ['human', 'array']}
 
-    def __init__(self, width, height, screen_width=640, screen_height=480, seed=None):
+    def __init__(self, width, height, screen_size=(640, 480), seed=None):
         self.game = PathFindingGame(width, height, seed)
 
-        self.screen_width = screen_width
-        self.screen_height = screen_height
+        self.screen_width = screen_size[0]
+        self.screen_height = screen_size[1]
         self.render_init = False
         
         self.observation_space = spaces.MultiDiscrete(self.game.get_state().shape)
@@ -38,6 +38,7 @@ class PathFindingEnv(gym.Env):
 
         elif (mode == 'array'):
             print(self.game.get_state())
+
 
     def close(self):
         try:
@@ -74,6 +75,7 @@ class PathFindingEnv(gym.Env):
 
     def get_color(self, value):
         return {
+            -1 : 0x555555,
             0 : 0xFFFFFF,
             1 : 0x000000,
             2 : 0x00FF00,
