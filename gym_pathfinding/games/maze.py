@@ -285,9 +285,8 @@ class MazeGame(object):
 
     def quit(self):
         try:
-            pass
-            #pygame.display.quit()
-            #pygame.quit()
+            pygame.display.quit()
+            pygame.quit()
         except:
             pass
 

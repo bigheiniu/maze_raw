@@ -15,28 +15,26 @@ class MazeEnv(gym.Env):
 
     def __init__(self, width, height, state_type, seed=None, full_deterministic=False):
 
-        self.env = MazeGame(
-            width, height, 640, 480, state_type, 80, 80, seed=seed, seed_both=full_deterministic
-        )
+        self.env = MazeGame(width, height, 640, 480, state_type, 80, 80, seed=seed, seed_both=full_deterministic)
 
-        self.observation_space = self.env.get_state().shape
-        self.action_space = 4
+        self.observation_space = spaces.MultiDiscrete(self.env.get_state().shape)
+        self.action_space = spaces.Discrete(4)
 
-    def _step(self, action):
-        return self.env.step(action)
-
-    def _reset(self):
+    def reset(self):
         return self.env.reset()
 
-    def _seed(self):
+    def step(self, action):
+        return self.env.step(action)
+
+    def seed(self):
         return self.env.seed
 
-    def _render(self, mode='human', close=False):
-        if close:
-            self.env.quit()
-            return None
-
+    def render(self, mode='human'):
         return self.env.render()
+
+    def close(self):
+        self.env.quit()
+
 
 def create_maze_env(id, name, width, height, state_type, seed=None, full_deterministic=False):
 
