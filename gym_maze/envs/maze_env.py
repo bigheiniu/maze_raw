@@ -26,6 +26,9 @@ class MazeEnv(gym.Env):
     def _reset(self):
         return self.env.reset()
 
+    def _seed(self):
+        return self.env.seed
+
     def _render(self, mode='human', close=False):
         if close:
             self.env.quit()

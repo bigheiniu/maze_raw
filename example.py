@@ -81,7 +81,7 @@ if __name__ == '__main__':
                     timestep += 1
 
                     # Draw environment on screen
-                    env.render()  # For image you MUST call this
+                    env.render(mode="human")  # For image you MUST call this
 
                     # Draw action from distribution
                     action = agent.act(state, force_exploit=True if phase == "exploit" else False)
@@ -118,7 +118,7 @@ if __name__ == '__main__':
                 if len(agent.memory) > agent.batch_size:
                     agent.replay(q_table=env.env.q_table)
 
-                env.render()  # For image you MUST call this
+                env.render(mode="human")  # For image you MUST call this
                 logger.info(json.dumps({
                     "epoch": epoch,
                     "steps": timestep,
