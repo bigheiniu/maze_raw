@@ -17,7 +17,7 @@ from time import sleep
 
 env = gym.make('pathfinding-9x9-v0')
 
-for epoch in range(10):
+for episode in range(10):
     s = env.reset()
     
     for timestep in range(50):
