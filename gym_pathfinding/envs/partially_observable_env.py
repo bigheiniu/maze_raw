@@ -11,8 +11,13 @@ class PartiallyObservablePathFindingEnv(gym.Env):
         -1 = unknown
     """
 
-    def __init__(self, width, height, observable_depth, *, screen_size=(640, 640), generation_seed=None, spawn_seed=None):
-        self.env = PathFindingEnv(width, height, screen_size=screen_size, generation_seed=generation_seed, spawn_seed=spawn_seed)
+    def __init__(self, lines, columns, observable_depth, *, grid_type="free", screen_size=(640, 640), generation_seed=None, spawn_seed=None):
+        self.env = PathFindingEnv(lines, columns, 
+            grid_type=grid_type, 
+            screen_size=screen_size, 
+            generation_seed=generation_seed, 
+            spawn_seed=spawn_seed
+        )
         self.observable_depth = observable_depth
 
         self.observation_space = self.env.observation_space
@@ -48,31 +53,47 @@ class PartiallyObservablePathFindingEnv(gym.Env):
 def partial_grid(grid, center, observable_depth):
     """return the centered partial state, place -1 to non-visible cells"""
 
-    x, y = center
+    i, j = center
     offset = observable_depth
 
     mask = np.ones_like(grid, dtype=bool)
-    mask[max(0, x - offset): x + offset + 1, max(0, y - offset): y + offset + 1] = False
+    mask[max(0, i - offset): i + offset + 1, max(0, j - offset): j + offset + 1] = False
 
     grid[mask] = -1
     return grid
 
-def create_partially_observable_pathfinding_env(id, name, width, height, observable_depth, seed=None):
+def create_partially_observable_pathfinding_env(id, name, lines, columns, observable_depth, *, grid_type="free", generation_seed=None, spawn_seed=None):
 
     def constructor(self):
-        PartiallyObservablePathFindingEnv.__init__(self, width, height, observable_depth, seed=seed)
+        PartiallyObservablePathFindingEnv.__init__(self, lines, columns, observable_depth, 
+            grid_type=grid_type,
+            generation_seed=generation_seed, 
+            spawn_seed=spawn_seed
+        )
     
     env_class = type(name, (PartiallyObservablePathFindingEnv,), {
-            "id" : id,
-            "__init__": constructor
-        })
+        "id" : id,
+        "__init__": constructor
+    })
     return env_class
 
 
 # Create classes 
 
 sizes = list(range(9, 20, 2)) + [25, 35, 55]
-envs = [create_partially_observable_pathfinding_env("partially_observable_pathfinding-{i}x{i}-v0".format(i=i), "PartiallyObservablePathFinding{i}x{i}Env".format(i=i), i, i, 2) for i in sizes]
+envs = [
+    create_partially_observable_pathfinding_env(
+        id="partially-observable-pathfinding-{type}-{n}x{n}-d{obs}-v0".format(type=grid_type, n=size, obs=obs_depth),
+        name="PartiallyObservablePathFinding{type}{n}x{n}D{obs}Env".format(type=grid_type.capitalize(), n=size, obs=obs_depth),
+        grid_type=grid_type,
+        lines=size, 
+        columns=size, 
+        observable_depth=2,
+    ) 
+    for size in sizes 
+    for obs_depth in range(2, 5)
+    for grid_type in ["free", "obstacle", "maze"]
+]
 
 for env_class in envs:
     globals()[env_class.__name__] = env_class

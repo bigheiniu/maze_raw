@@ -1,29 +1,5 @@
-
-
 import random
-
 import numpy as np
-# from gym_pathfinding.games.pathfinding import path_exists
-
-
-def generate_grid(shape, *, grid_type="free", generation_seed=None, spawn_seed=None):
-    """ 
-    Generate a grid
-
-    shape : (width, height)
-    grid_type : {"free", "with_obstacle", "maze") 
-    """
-
-    # while True:
-    #     create_with_obstacle
-    #     if path_exists(grid, start, goal):
-    #         return grid, start, goal
-        
-    grid = create_grid(shape, grid_type, generation_seed=generation_seed)
-    start, goal = spawn_start_goal(grid, spawn_seed=spawn_seed)
-
-    return grid, start, goal
-
 
 def create_grid(shape, grid_type, generation_seed=None):
     return {
@@ -32,6 +8,32 @@ def create_grid(shape, grid_type, generation_seed=None):
         # "with_obstacle" : create_with_obstacle(shape, generation_seed),
     }[grid_type]
 
+def generate_grid(shape, *, grid_type="free", generation_seed=None, spawn_seed=None):
+    """ 
+    Generate a grid
+
+    shape : (lines, columns)
+    grid_type : {"free", "obstacle", "maze") 
+
+    return : grid, start, goal
+    """
+
+    if grid_type == "obstacle":
+        while True:
+            grid = create_obstacle(shape, generation_seed=generation_seed)
+            start, goal = spawn_start_goal(grid, spawn_seed=spawn_seed)
+
+            if path_exists(grid, start, goal):
+                return grid, start, goal
+
+    grid = {
+        "free" : init_grid(shape),
+        "maze" : create_maze(shape, generation_seed=generation_seed),
+    }[grid_type]
+
+    start, goal = spawn_start_goal(grid, spawn_seed=spawn_seed)
+
+    return grid, start, goal
 
 def spawn_start_goal(grid, spawn_seed=None):
     """Returns two random position on the grid."""
@@ -50,10 +52,6 @@ def init_grid(shape):
     grid[0, :] = grid[-1, :] = 1
     grid[:, 0] = grid[:, -1] = 1
     return grid
-
-
-# def create_with_obstacle(shape, generation_seed=None):
-    # pass    
 
 def create_maze(shape, generation_seed=None, complexity=.75, density=.50):
     # Only odd shapes
@@ -90,6 +88,37 @@ def create_maze(shape, generation_seed=None, complexity=.75, density=.50):
                     grid[y_ + (y - y_) // 2, x_ + (x - x_) // 2] = 1
                     x, y = x_, y_
     return grid
+
+
+def create_obstacle(shape, generation_seed=None):
+    rng = random.Random(generation_seed)
+    lines, columns = shape
+    nb_rectangles = rng.randint(3, 6)
+
+    grid = init_grid(shape)
+    for _ in range(nb_rectangles):
+        add_rectangle(grid, rect(rng, lines, columns))
+
+    return grid
+
+def rect(rng, lines, columns):
+    """ return i, j, width, height"""
+
+    w = rng.randint(1, max(1, lines // 2))
+    h = rng.randint(1, max(1, columns // 2))
+
+    i = rng.randint(0, lines - h)
+    j = rng.randint(0, columns - w)
+    
+    return i, j, w, h
+
+
+def add_rectangle(grid, rectangle):
+    i, j, w, h = rectangle
+
+    mask = np.zeros_like(grid, dtype=bool)
+    mask[i: i+h, j: j+w] = True
+    grid[mask] = 1
 
 
 # North, South, East, West

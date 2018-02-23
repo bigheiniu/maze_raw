@@ -17,7 +17,31 @@ def test_path_exists():
     assert not path_exists(grid, (1, 1), (3, 5))
 
 
-from gym_pathfinding.games.grid_generation import generate_grid
+from gym_pathfinding.games.grid_generation import add_rectangle
+
+def test_add_rectangle():
+    grid = np.array([
+        [0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0],
+        [0,0,0,0,0,0,0],
+    ])
+
+    expected = np.array([
+        [0,0,0,0,0,0,0],
+        [0,1,1,1,0,0,0],
+        [0,1,1,1,0,0,0],
+        [0,0,0,1,1,0,0],
+        [0,0,0,1,1,0,0],
+    ])
+    
+    add_rectangle(grid, (1, 1, 3, 2))
+    add_rectangle(grid, (3, 3, 2, 2))
+    
+    assert np.all(grid == expected)
+    
+
 
 
 

@@ -17,10 +17,10 @@ class PathFindingGame(object):
         3 = goal
     """
 
-    def __init__(self, width=15, height=15, *, grid_type="free", generation_seed=None, spawn_seed=None):
-        self.width = width
-        self.height = height
-        self.shape = (width, height)
+    def __init__(self, lines=15, columns=15, *, grid_type="free", generation_seed=None, spawn_seed=None):
+        self.lines = lines
+        self.columns = columns
+        self.shape = (lines, columns)
 
         self.grid_type = grid_type
         
@@ -57,13 +57,13 @@ class PathFindingGame(object):
         
         assert 0 <= a and a < 4
 
-        dx, dy = MOUVEMENT[a]
-        px, py = self.player
+        di, dj = MOUVEMENT[a]
+        pi, pj = self.player
 
-        next_x, next_y = px + dx, py + dy
+        next_i, next_j = pi + di, pj + dj
 
-        if is_legal(self.grid, next_x, next_y):
-            self.player = (next_x, next_y)
+        if is_legal(self.grid, next_i, next_j):
+            self.player = (next_i, next_j)
 
         if self.player == self.target:
             self.terminal = True
@@ -78,8 +78,8 @@ class PathFindingGame(object):
 # North, South, East, West
 MOUVEMENT = [(0, -1), (0, 1), (1, 0), (-1, 0)]
 
-def is_legal(grid, next_x, next_y):
-    return grid[next_x, next_y] == 0
+def is_legal(grid, next_i, next_j):
+    return grid[next_i, next_j] == 0
 
 
 

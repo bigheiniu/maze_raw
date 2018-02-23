@@ -9,7 +9,7 @@ class GridViewer(object):
         self.screen_width = screen_width
         self.screen_height = screen_height
 
-    def start(self, grid_width, grid_height):
+    def start(self, lines, columns):
         pygame.init()
         pygame.font.init()
         pygame.display.set_caption("PathFinding")
@@ -20,8 +20,8 @@ class GridViewer(object):
         self.surface = self.surface.convert()
         self.surface.fill((255, 255, 255))
 
-        self.tile_w = (self.screen_width + 5) / grid_width
-        self.tile_h = (self.screen_height + 5) / grid_height
+        self.tile_w = (self.screen_width + 5) / lines
+        self.tile_h = (self.screen_height + 5) / columns
 
     def stop(self):
         try:
@@ -35,7 +35,9 @@ class GridViewer(object):
 
         self.surface.fill((0, 0, 0))
         
-        for (x, y), value in np.ndenumerate(grid):
+        for (i, j), value in np.ndenumerate(grid):
+            x, y = j, i # matrix has transposed positions
+
             quad = self.screen_quad_position(x, y)
             color = get_color(value)
 
