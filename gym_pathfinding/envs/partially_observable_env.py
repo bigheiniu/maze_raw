@@ -11,8 +11,8 @@ class PartiallyObservablePathFindingEnv(gym.Env):
         -1 = unknown
     """
 
-    def __init__(self, width, height, observable_depth, screen_size=(640, 480), seed=None):
-        self.env = PathFindingEnv(width, height, screen_size=screen_size, seed=seed)
+    def __init__(self, width, height, observable_depth, *, screen_size=(640, 640), generation_seed=None, spawn_seed=None):
+        self.env = PathFindingEnv(width, height, screen_size=screen_size, generation_seed=generation_seed, spawn_seed=spawn_seed)
         self.observable_depth = observable_depth
 
         self.observation_space = self.env.observation_space

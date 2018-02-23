@@ -5,6 +5,7 @@ from queue import PriorityQueue
 import numpy as np
 import scipy.misc
 
+from gym_pathfinding.games.grid_generation import generate_grid
 
 class PathFindingGame(object):
     """
@@ -16,38 +17,32 @@ class PathFindingGame(object):
         3 = goal
     """
 
-    def __init__(self, width=15, height=15, grid_type="free", seed=None):
+    def __init__(self, width=15, height=15, *, grid_type="free", generation_seed=None, spawn_seed=None):
         self.width = width
         self.height = height
         self.shape = (width, height)
 
         self.grid_type = grid_type
-        self.seed = seed
+        
+        self.generation_seed = generation_seed
+        self.spawn_seed = spawn_seed
 
-        self.reset()
+        self.terminal = True
+
+        self.grid = self.player = self.target = None
 
     def reset(self):
-        # Reinitialize RNG
-        self.rng = random.Random(self.seed)
-        self.np_rng = np.random.RandomState(self.seed)
 
         self.terminal = False
 
-        self.grid = generate_grid(self.shape, type=self.grid_type)
-
-        self.player, self.target = self.spawn_players()
+        self.grid, self.player, self.target = generate_grid(
+            self.shape, 
+            grid_type=self.grid_type,
+            generation_seed=self.generation_seed, 
+            spawn_seed=self.spawn_seed
+        )
 
         return self.get_state()
-
-    def spawn_players(self):
-        """Returns two random position on the grid."""
-
-        xs, ys = np.where(self.grid == 0)
-        free_positions = list(zip(xs, ys))
-
-        player_spawn, target_spawn = self.rng.sample(free_positions, 2)
-
-        return player_spawn, target_spawn
 
     def get_state(self):
         state = np.array(self.grid, copy=True)
@@ -80,56 +75,11 @@ class PathFindingGame(object):
         return self.get_state(), reward, self.terminal, ""
 
 
-def generate_grid(shape, type="free"):
-    """ generate a grid
-    type : {"free", "obstruct", "maze") """
-
-    grid = np.zeros(shape, dtype=np.int8)
-
-    # Add borders
-    grid[0, :] = grid[-1, :] = 1
-    grid[:, 0] = grid[:, -1] = 1
-
-    return grid
-
-
 # North, South, East, West
 MOUVEMENT = [(0, -1), (0, 1), (1, 0), (-1, 0)]
 
 def is_legal(grid, next_x, next_y):
     return grid[next_x, next_y] == 0
 
-
-
-def dfs(grid, start, goal):
-    """ Depth-first search on the grid
-
-    return :
-        path_length : the path length
-        path : list of positions
-    """
-
-    stack = [(start, [start])]
-
-    possible_path = PriorityQueue()
-    visited = set()
-    while stack:
-        (vertex, path) = stack.pop()
-        visited.add(vertex)
-
-        legal_cells = set(legal_directions(grid, *vertex)) - visited
-        for next in legal_cells:
-            if next == goal:
-                full_path = path + [next]
-                length = len(path)
-                possible_path.put((length, full_path))
-            else:
-                stack.append((next, path + [next]))
-
-    return possible_path.get()
-
-def legal_directions(grid, posx, posy):
-    possible_moves = [(posx + dx, posy + dy) for dx, dy in MOUVEMENT]
-    return [(next_x, next_y) for next_x, next_y in possible_moves if is_legal(grid, next_x, next_y)]
 
 
