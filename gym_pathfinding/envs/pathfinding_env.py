@@ -10,10 +10,10 @@ from gym_pathfinding.rendering import GridViewer
 class PathFindingEnv(gym.Env):
     metadata = {'render.modes': ['human', 'array']}
 
-    def __init__(self, width, height, screen_width=640, screen_height=480, seed=None):
+    def __init__(self, width, height, screen_size=(640, 480), seed=None):
         self.game = PathFindingGame(width, height, seed)
 
-        self.viewer = GridViewer(screen_width, screen_height)
+        self.viewer = GridViewer(screen_size[0], screen_size[1])
         self.viewer.start(width, height)
 
         self.observation_space = spaces.MultiDiscrete(self.game.get_state().shape)
@@ -37,7 +37,7 @@ class PathFindingEnv(gym.Env):
             return grid
 
     def close(self):
-        self.viewer.close()
+        self.viewer.stop()
 
 
 def create_pathfinding_env(id, name, width, height, state_type, seed=None):

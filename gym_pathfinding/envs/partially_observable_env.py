@@ -1,40 +1,61 @@
+
+
 import numpy as np
+import gym
 
 from gym_pathfinding.envs.pathfinding_env import PathFindingEnv
 
 
-
-class PartiallyObservableEnv(PathFindingEnv):
+class PartiallyObservableEnv(gym.Env):
     """ PartiallyObservableEnv
         -1 = unknown
     """
 
     def __init__(self, width, height, observable_depth, screen_size=(640, 480), seed=None):
-        super(PartiallyObservableEnv, self).__init__(width, height, screen_size, seed)
-
+        self.env = PathFindingEnv(width, height, screen_size=screen_size, seed=seed)
         self.observable_depth = observable_depth
 
+        self.observation_space = self.env.observation_space
+        self.action_space = self.env.action_space
 
+    def reset(self):
+        state = self.env.reset()
+        return self.partial_state(state)
 
-    # def step(self, action):
-    #     state, reward, done, info = super(PartiallyObservableEnv, self).step(action)
+    def step(self, action):
+        state, reward, done, info = self.env.step(action)
+        return self.partial_state(state), reward, done, info
 
-    #     state = partial_state(state, self.game.player, self.observable_depth)
+    def seed(self):
+        return self.env.seed()
 
-    #     return state, reward, done, info
+    def render(self, mode='human'):
+        grid = self.env.game.get_state()
+        grid = self.partial_state(grid)
 
+        if (mode == 'human'):
+            self.env.viewer.draw(grid)
+        elif (mode == 'array'):
+            return grid
 
-def partial_state(state, center, observable_depth):
-    """return the centered partial state"""
+    def close(self):
+        self.env.close()
+
+    def partial_state(self, state):
+        return partial_grid(state, self.env.game.player, self.observable_depth)
+
+    
+def partial_grid(grid, center, observable_depth):
+    """return the centered partial state, place -1 to non-visible cells"""
 
     x, y = center
     offset = observable_depth
 
-    mask = np.ones_like(state, dtype=bool)
+    mask = np.ones_like(grid, dtype=bool)
     mask[max(0, x - offset): x + offset + 1, max(0, y - offset): y + offset + 1] = False
 
-    state[mask] = -1
-    return state
+    grid[mask] = -1
+    return grid
 
 
 class Env(PartiallyObservableEnv):

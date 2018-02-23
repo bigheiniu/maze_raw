@@ -23,7 +23,7 @@ class GridViewer(object):
         self.tile_w = (self.screen_width + 5) / grid_width
         self.tile_h = (self.screen_height + 5) / grid_height
 
-    def close(self):
+    def stop(self):
         try:
             pygame.display.quit()
             pygame.quit()
