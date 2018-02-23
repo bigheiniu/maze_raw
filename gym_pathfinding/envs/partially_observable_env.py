@@ -83,16 +83,24 @@ def create_partially_observable_pathfinding_env(id, name, lines, columns, observ
 sizes = list(range(9, 20, 2)) + [25, 35, 55]
 envs = [
     create_partially_observable_pathfinding_env(
-        id="partially-observable-pathfinding-{type}-{n}x{n}-d{obs}-v0".format(type=grid_type, n=size, obs=obs_depth),
-        name="PartiallyObservablePathFinding{type}{n}x{n}D{obs}Env".format(type=grid_type.capitalize(), n=size, obs=obs_depth),
+        id="partially-observable-pathfinding-{type}-{n}x{n}-d{obs}{deterministic}-v0".format(
+            type=grid_type, n=size, obs=obs_depth,
+            deterministic="-deterministic" if seed else ""
+        ),
+        name="PartiallyObservablePathFinding{type}{n}x{n}d{obs}{deterministic}Env".format(
+            type=grid_type.capitalize(), n=size, obs=obs_depth,
+            deterministic="Deterministic" if seed else ""
+        ),
         grid_type=grid_type,
         lines=size, 
         columns=size, 
-        observable_depth=2,
+        observable_depth=obs_depth,
+        generation_seed=seed
     ) 
-    for size in sizes 
-    for obs_depth in range(2, 5)
     for grid_type in ["free", "obstacle", "maze"]
+    for seed in [None, 1]
+    for obs_depth in range(2, 10 + 1)
+    for size in sizes 
 ]
 
 for env_class in envs:

@@ -66,14 +66,22 @@ def create_pathfinding_env(id, name, lines, columns, grid_type="free", generatio
 sizes = list(range(9, 20, 2)) + [25, 35, 55]
 envs = [
     create_pathfinding_env(
-        id="pathfinding-{type}-{n}x{n}-v0".format(type=grid_type, n=size),
-        name="PathFinding{type}{n}x{n}Env".format(type=grid_type.capitalize(), n=size),
+        id="pathfinding-{type}-{n}x{n}{deterministic}-v0".format(
+            type=grid_type, n=size,
+            deterministic="-deterministic" if seed else ""
+        ),
+        name="PathFinding{type}{n}x{n}{deterministic}Env".format(
+            type=grid_type.capitalize(), n=size,
+            deterministic="Deterministic" if seed else ""
+        ),
         grid_type=grid_type,
         lines=size, 
-        columns=size
+        columns=size,
+        generation_seed=seed
     ) 
-    for size in sizes 
     for grid_type in ["free", "obstacle", "maze"]
+    for seed in [None, 1]
+    for size in sizes 
 ]
 
 for env_class in envs:
