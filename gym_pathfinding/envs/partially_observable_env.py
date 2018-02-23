@@ -6,7 +6,7 @@ import gym
 from gym_pathfinding.envs.pathfinding_env import PathFindingEnv
 
 
-class PartiallyObservableEnv(gym.Env):
+class PartiallyObservablePathFindingEnv(gym.Env):
     """ PartiallyObservableEnv
         -1 = unknown
     """
@@ -57,15 +57,28 @@ def partial_grid(grid, center, observable_depth):
     grid[mask] = -1
     return grid
 
+def create_partially_observable_pathfinding_env(id, name, width, height, observable_depth, seed=None):
 
-class Env(PartiallyObservableEnv):
-    id="mdrmdr-v0"
+    def constructor(self):
+        PartiallyObservablePathFindingEnv.__init__(self, width, height, observable_depth, seed=seed)
+    
+    env_class = type(name, (PartiallyObservablePathFindingEnv,), {
+            "id" : id,
+            "__init__": constructor
+        })
+    return env_class
 
-    """docstring for Env"""
-    def __init__(self):
-        super(Env, self).__init__(9, 9, 2)
-        
 
+# Create classes 
+
+sizes = list(range(9, 20, 2)) + [25, 35, 55]
+envs = [create_partially_observable_pathfinding_env("partially_observable_pathfinding-{i}x{i}-v0".format(i=i), "PartiallyObservablePathFinding{i}x{i}Env".format(i=i), i, i, 2) for i in sizes]
+
+for env_class in envs:
+    globals()[env_class.__name__] = env_class
+
+def get_env_classes():
+    return envs
 
 
         

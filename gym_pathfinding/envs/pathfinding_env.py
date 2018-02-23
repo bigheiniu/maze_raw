@@ -40,7 +40,7 @@ class PathFindingEnv(gym.Env):
         self.viewer.stop()
 
 
-def create_pathfinding_env(id, name, width, height, state_type, seed=None):
+def create_pathfinding_env(id, name, width, height, seed=None):
 
     def constructor(self):
         PathFindingEnv.__init__(self, width, height, seed=seed)
@@ -55,7 +55,7 @@ def create_pathfinding_env(id, name, width, height, state_type, seed=None):
 # Create classes 
 
 sizes = list(range(9, 20, 2)) + [25, 35, 55]
-envs = [create_pathfinding_env("pathfinding-{i}x{i}-v0".format(i=i), "PathFinding{i}x{i}Env".format(i=i), i, i, "image") for i in sizes]
+envs = [create_pathfinding_env("pathfinding-{i}x{i}-v0".format(i=i), "PathFinding{i}x{i}Env".format(i=i), i, i) for i in sizes]
 
 for env_class in envs:
     globals()[env_class.__name__] = env_class

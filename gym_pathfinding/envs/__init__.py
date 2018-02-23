@@ -16,22 +16,8 @@ for env_class in pathfinding_env.get_env_classes():
         entry_point='gym_pathfinding.envs.pathfinding_env:{name}'.format(name=env_class.__name__)
     )
 
-register(
-    id="mdrmdr-v0",
-    entry_point='gym_pathfinding.envs.partially_observable_env:Env'
-)
-
-
-
-# for env in dir(maze_env):
-#     print(env)
-
-#     if "Maze" not in env or "Env" not in env:
-#         continue
-
-#     env_class = getattr(maze_env, env)
-
-#     register(
-#         id=env_class.id,
-#         entry_point='gym_pathfinding.envs.maze_env:{env}'.format(env=env)
-#     )
+for env_class in partially_observable_env.get_env_classes():
+    register(
+        id=env_class.id,
+        entry_point='gym_pathfinding.envs.partially_observable_env:{name}'.format(name=env_class.__name__)
+    )
