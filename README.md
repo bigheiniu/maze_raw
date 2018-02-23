@@ -1,6 +1,6 @@
 # gym-pathfinding
 
-A gym implementation for the pathfinding problem.
+An OpenAI Gym implementation for the pathfinding problem.
 
 ## Installation
 ```bash
@@ -15,7 +15,7 @@ import gym
 import gym_pathfinding
 from time import sleep
 
-env = gym.make('pathfinding-9x9-v0')
+env = gym.make('pathfinding-maze-9x9-v0')
 
 for episode in range(10):
     s = env.reset()
@@ -32,8 +32,28 @@ for episode in range(10):
 env.close()
 ```
 
-## Environnement
+## Environnements
 
+#### Naming 
+```
+pathfinding-[grid_type]-[size_w]x[size_h]-v0 
+partially-observable-pathfinding-[grid_type]-[size_w]x[size_h]-d[observation_depth]-v0
+```
+
+- grid_type : {'free', 'obstacle', 'maze'}
+- size_w and size_h : in range(9, 20, 2) + [25, 35, 55]
+- observation_depth : between 3 and 5
+
+#### Example
+
+```
+pathfinding-free-9x9-v0
+pathfinding-obstacle-25x25-v0
+pathfinding-maze-25x25-v0
+
+partially-observable-pathfinding-free-9x9-d3-v0
+partially-observable-pathfinding-obstacle-25x25-d5-v0
+```
 
 ## Information
 The initiale project come from https://github.com/cair/gym-maze
