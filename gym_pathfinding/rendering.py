@@ -5,23 +5,29 @@ import numpy as np
 
 class GridViewer(object):
     
-    def __init__(self, screen_width, screen_height):
+    def __init__(self, screen_width, screen_height, grid_lines, grid_columns):
         self.screen_width = screen_width
         self.screen_height = screen_height
+        self.grid_lines = grid_lines
+        self.grid_columns = grid_columns
 
-    def start(self, lines, columns):
+        self.started = False
+
+    def start(self):
         pygame.init()
         pygame.font.init()
         pygame.display.set_caption("PathFinding")
-
+    
         self.font = pygame.font.SysFont("Arial", size=16)
         self.screen = pygame.display.set_mode((self.screen_width + 5, self.screen_height + 5), 0, 32)
         self.surface = pygame.Surface(self.screen.get_size())
         self.surface = self.surface.convert()
         self.surface.fill((255, 255, 255))
 
-        self.tile_w = (self.screen_width + 5) / lines
-        self.tile_h = (self.screen_height + 5) / columns
+        self.tile_w = (self.screen_width + 5) / self.grid_lines
+        self.tile_h = (self.screen_height + 5) / self.grid_columns
+
+        self.started = True
 
     def stop(self):
         try:
@@ -32,6 +38,9 @@ class GridViewer(object):
 
     def draw(self, grid):
         """grid = a numpy array representing a grid of int value"""
+
+        if not self.started:
+            self.start()
 
         self.surface.fill((0, 0, 0))
         

@@ -18,10 +18,10 @@ class PathFindingEnv(gym.Env):
         )
         self.game.reset()
         
-        self.viewer = GridViewer(screen_size[0], screen_size[1])
-        self.viewer.start(lines, columns)
+        self.viewer = GridViewer(screen_size[0], screen_size[1], lines, columns)
 
-        self.observation_space = spaces.MultiDiscrete(self.game.get_state().shape)
+        shape = self.game.get_state().shape
+        self.observation_space = spaces.Box(low=0, high=3, shape=shape, dtype=np.int8)
         self.action_space = spaces.Discrete(4)
     
     def reset(self):
