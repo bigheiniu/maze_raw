@@ -5,3 +5,6 @@
 *.png
 *.log
 gym_pathfinding\.egg-info/
+
+\.pytest_cache/
+
