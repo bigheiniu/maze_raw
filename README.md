@@ -2,6 +2,9 @@
 
 An OpenAI Gym implementation for the pathfinding problem.
 
+<img src="https://github.com/DidiBear/gym-pathfinding/env_examples.png" alt="env-examples" width="500" height="500">
+
+
 ## Installation
 ```bash
 git clone [url_repo]
