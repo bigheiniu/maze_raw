@@ -63,7 +63,7 @@ def create_pathfinding_env(id, name, lines, columns, grid_type="free", generatio
 
 # Create classes 
 
-sizes = list(range(9, 20, 2)) + [25, 35, 55]
+sizes = list(range(5, 20, 2)) + [25, 35, 55]
 envs = [
     create_pathfinding_env(
         id="pathfinding-{type}-{n}x{n}{deterministic}-v0".format(

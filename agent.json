@@ -1,0 +1,36 @@
+{
+    "type": "dqn_agent",
+
+    "memory": {
+        "type": "replay",
+        "capacity": 10000
+    },
+
+    "optimizer": {
+        "type": "clipped_step",
+        "clipping_value": 0.1,
+        "optimizer": {
+            "type": "adam",
+            "learning_rate": 1e-3
+        }
+    },
+
+    "discount": 0.99,
+    "entropy_regularization": null,
+    "double_q_model": true,
+
+    "target_sync_frequency": 1000,
+    "target_update_weight": 1.0,
+
+    "explorations_spec": {
+        "type": "epsilon_anneal",
+        "initial_epsilon": 0.5,
+        "final_epsilon": 0.0,
+        "timesteps": 10000
+    },
+
+    "saver_spec": {
+        "directory": "D:/Didi/dev/project/gym-pathfinding/model",
+        "seconds": 600
+    }
+}
