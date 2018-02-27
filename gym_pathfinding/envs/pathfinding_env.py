@@ -10,12 +10,8 @@ from gym_pathfinding.rendering import GridViewer
 class PathFindingEnv(gym.Env):
     metadata = {'render.modes': ['human', 'array']}
 
-    def __init__(self, lines, columns, *, grid_type="free", screen_size=(640, 640), generation_seed=None, spawn_seed=None):
-        self.game = PathFindingGame(lines, columns, 
-            grid_type=grid_type, 
-            generation_seed=generation_seed, 
-            spawn_seed=spawn_seed
-        )
+    def __init__(self, lines, columns, *, grid_type="free", screen_size=(640, 640)):
+        self.game = PathFindingGame(lines, columns, grid_type=grid_type)
         self.game.reset()
         
         self.viewer = GridViewer(screen_size[0], screen_size[1], lines, columns)
@@ -30,8 +26,8 @@ class PathFindingEnv(gym.Env):
     def step(self, action):
         return self.game.step(action)
 
-    def seed(self):
-        return self.game.generation_seed or self.game.spawn_seed or None
+    def seed(self, seed=None):
+        self.game.seed(generation_seed=seed, spawn_seed=seed)
 
     def render(self, mode='human'):
         grid = self.game.get_state()
@@ -45,14 +41,10 @@ class PathFindingEnv(gym.Env):
         self.viewer.stop()
 
 
-def create_pathfinding_env(id, name, lines, columns, grid_type="free", generation_seed=None, spawn_seed=None):
+def create_pathfinding_env(id, name, lines, columns, grid_type="free"):
 
     def constructor(self):
-        PathFindingEnv.__init__(self, lines, columns, 
-            grid_type=grid_type,
-            generation_seed=generation_seed, 
-            spawn_seed=spawn_seed
-        )
+        PathFindingEnv.__init__(self, lines, columns, grid_type=grid_type)
     
     pathfinding_env_class = type(name, (PathFindingEnv,), {
         "id" : id,
@@ -66,21 +58,17 @@ def create_pathfinding_env(id, name, lines, columns, grid_type="free", generatio
 sizes = list(range(5, 20, 2)) + [25, 35, 55]
 envs = [
     create_pathfinding_env(
-        id="pathfinding-{type}-{n}x{n}{deterministic}-v0".format(
-            type=grid_type, n=size,
-            deterministic="-deterministic" if seed else ""
+        id="pathfinding-{type}-{n}x{n}-v0".format(
+            type=grid_type, n=size
         ),
-        name="PathFinding{type}{n}x{n}{deterministic}Env".format(
-            type=grid_type.capitalize(), n=size,
-            deterministic="Deterministic" if seed else ""
+        name="PathFinding{type}{n}x{n}Env".format(
+            type=grid_type.capitalize(), n=size
         ),
         grid_type=grid_type,
         lines=size, 
-        columns=size,
-        generation_seed=seed
+        columns=size
     ) 
     for grid_type in ["free", "obstacle", "maze"]
-    for seed in [None, 1]
     for size in sizes 
 ]
 
