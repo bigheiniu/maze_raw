@@ -10,7 +10,7 @@ An OpenAI Gym implementation for the pathfinding problem.
 ```bash
 git clone [url_repo]
 cd gym-pathfinding
-pip install .
+pip install -e .
 ```
 
 ## Basic Usage
