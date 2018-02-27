@@ -19,7 +19,8 @@ import gym
 import gym_pathfinding
 from time import sleep
 
-env = gym.make('pathfinding-maze-9x9-v0')
+env = gym.make('pathfinding-obstacle-25x25-v0')
+env.seed(1) # full deterministic env
 
 for episode in range(10):
     s = env.reset()
@@ -38,27 +39,26 @@ env.close()
 
 ## Environnements
 
-#### Naming 
+#### Examples
+
 ```
-pathfinding-[grid_type]-[size_w]x[size_h]-[deterministic]-v0 
-partially-observable-pathfinding-[grid_type]-[size_w]x[size_h]-d[observation_depth]-[deterministic]-v0
+pathfinding-free-9x9-v0
+pathfinding-maze-25x25-v0
+pathfinding-obstacle-25x25-v0
+
+partially-observable-pathfinding-free-9x9-d3-v0
+partially-observable-pathfinding-obstacle-25x25-d5-v0
+```
+
+#### Naming
+```
+pathfinding-[grid_type]-[size_w]x[size_h]-v0 
+partially-observable-pathfinding-[grid_type]-[size_w]x[size_h]-d[observation_depth]-v0
 ```
 
 - grid_type : either "free", "obstacle" or "maze"
 - size_w and size_h : 9, 11, 13, 15, 17, 19, 25, 35, 55
 - observation_depth : between 2 and 10
-- deterministic : whether or not deterministic
-
-#### Example
-
-```
-pathfinding-free-9x9-v0
-pathfinding-maze-25x25-v0
-pathfinding-obstacle-25x25-deterministic-v0
-
-partially-observable-pathfinding-free-9x9-d3-v0
-partially-observable-pathfinding-obstacle-25x25-d5-v0
-```
 
 ## Information
 The initiale project come from https://github.com/cair/gym-maze
