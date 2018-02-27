@@ -1,9 +1,0 @@
-[
-    {"type": "conv2d", "size": 8, "window": 3, "stride": 1, "padding": "SAME"},
-    {"type": "conv2d", "size": 8, "window": 3, "stride": 2, "padding": "VALID"},
-    {"type": "conv2d", "size": 8, "window": 3, "stride": 2, "padding": "VALID"},
-    {"type": "flatten"},
-    {"type": "dense", "size": 256, "activation": "relu"},
-    {"type": "dense", "size": 32, "activation": "tanh"},
-    {"type": "internal_lstm", "size": 32}
-]
