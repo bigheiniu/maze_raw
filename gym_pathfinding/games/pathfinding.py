@@ -17,19 +17,21 @@ class PathFindingGame(object):
         3 = goal
     """
 
-    def __init__(self, lines=15, columns=15, *, grid_type="free", generation_seed=None, spawn_seed=None):
+    def __init__(self, lines=15, columns=15, *, grid_type="free"):
         self.lines = lines
         self.columns = columns
         self.shape = (lines, columns)
 
         self.grid_type = grid_type
         
-        self.generation_seed = generation_seed
-        self.spawn_seed = spawn_seed
-
         self.terminal = True
 
+        self.generation_seed = self.spawn_seed = None
         self.grid = self.player = self.target = None
+
+    def seed(self, generation_seed=None, spawn_seed=None):
+        self.generation_seed = generation_seed
+        self.spawn_seed = spawn_seed
 
     def reset(self):
 

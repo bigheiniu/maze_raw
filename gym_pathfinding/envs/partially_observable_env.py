@@ -11,12 +11,10 @@ class PartiallyObservablePathFindingEnv(gym.Env):
         -1 = unknown
     """
 
-    def __init__(self, lines, columns, observable_depth, *, grid_type="free", screen_size=(640, 640), generation_seed=None, spawn_seed=None):
+    def __init__(self, lines, columns, observable_depth, *, grid_type="free", screen_size=(640, 640)):
         self.env = PathFindingEnv(lines, columns, 
             grid_type=grid_type, 
-            screen_size=screen_size, 
-            generation_seed=generation_seed, 
-            spawn_seed=spawn_seed
+            screen_size=screen_size
         )
         self.observable_depth = observable_depth
 
@@ -31,8 +29,8 @@ class PartiallyObservablePathFindingEnv(gym.Env):
         state, reward, done, info = self.env.step(action)
         return self.partial_state(state), reward, done, info
 
-    def seed(self):
-        return self.env.seed()
+    def seed(self, seed=None):
+        self.env.seed(seed=seed)
 
     def render(self, mode='human'):
         grid = self.env.game.get_state()
@@ -62,14 +60,10 @@ def partial_grid(grid, center, observable_depth):
     grid[mask] = -1
     return grid
 
-def create_partially_observable_pathfinding_env(id, name, lines, columns, observable_depth, *, grid_type="free", generation_seed=None, spawn_seed=None):
+def create_partially_observable_pathfinding_env(id, name, lines, columns, observable_depth, *, grid_type="free"):
 
     def constructor(self):
-        PartiallyObservablePathFindingEnv.__init__(self, lines, columns, observable_depth, 
-            grid_type=grid_type,
-            generation_seed=generation_seed, 
-            spawn_seed=spawn_seed
-        )
+        PartiallyObservablePathFindingEnv.__init__(self, lines, columns, observable_depth, grid_type=grid_type)
     
     env_class = type(name, (PartiallyObservablePathFindingEnv,), {
         "id" : id,
@@ -83,22 +77,18 @@ def create_partially_observable_pathfinding_env(id, name, lines, columns, observ
 sizes = list(range(9, 20, 2)) + [25, 35, 55]
 envs = [
     create_partially_observable_pathfinding_env(
-        id="partially-observable-pathfinding-{type}-{n}x{n}-d{obs}{deterministic}-v0".format(
-            type=grid_type, n=size, obs=obs_depth,
-            deterministic="-deterministic" if seed else ""
+        id="partially-observable-pathfinding-{type}-{n}x{n}-d{obs}-v0".format(
+            type=grid_type, n=size, obs=obs_depth
         ),
-        name="PartiallyObservablePathFinding{type}{n}x{n}d{obs}{deterministic}Env".format(
-            type=grid_type.capitalize(), n=size, obs=obs_depth,
-            deterministic="Deterministic" if seed else ""
+        name="PartiallyObservablePathFinding{type}{n}x{n}d{obs}Env".format(
+            type=grid_type.capitalize(), n=size, obs=obs_depth
         ),
         grid_type=grid_type,
         lines=size, 
         columns=size, 
-        observable_depth=obs_depth,
-        generation_seed=seed
+        observable_depth=obs_depth
     ) 
     for grid_type in ["free", "obstacle", "maze"]
-    for seed in [None, 1]
     for obs_depth in range(2, 10 + 1)
     for size in sizes 
 ]
