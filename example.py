@@ -3,6 +3,7 @@ import gym_pathfinding
 from time import sleep
 
 env = gym.make('pathfinding-obstacle-25x25-v0')
+env.seed(1) # for full-deterministic environment
 
 for episode in range(5):
     s = env.reset()

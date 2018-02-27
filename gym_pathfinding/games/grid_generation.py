@@ -1,13 +1,6 @@
 import random
 import numpy as np
 
-def create_grid(shape, grid_type, generation_seed=None):
-    return {
-        "free" : init_grid(shape),
-        "maze" : create_maze(shape, generation_seed),
-        # "with_obstacle" : create_with_obstacle(shape, generation_seed),
-    }[grid_type]
-
 def generate_grid(shape, *, grid_type="free", generation_seed=None, spawn_seed=None):
     """ 
     Generate a grid

@@ -40,6 +40,32 @@ class PathFindingEnv(gym.Env):
     def close(self):
         self.viewer.stop()
 
+    # For image representation !
+
+    # @staticmethod
+    # def rgb2gray(rgb):
+    #     return np.dot(rgb[..., :3], [0.299, 0.587, 0.114])
+
+    # def get_state(self):
+
+    #     if self.state_representation == "image":
+    #         arr = pygame.surfarray.array3d(self.viewer.screen)
+    #         arr = scipy.misc.imresize(arr, self.image_state_size)
+    #         arr = arr / 255
+    #         arr = np.expand_dims(arr, axis=0)
+    #         return arr
+
+    #     elif self.state_representation == "image_gray":
+    #         arr = pygame.surfarray.array3d(self.screen)
+    #         arr = scipy.misc.imresize(arr, self.image_state_size)
+    #         arr = MazeGame.rgb2gray(arr)
+    #         arr = arr.reshape(*arr.shape, 1)
+    #         arr = np.expand_dims(arr, axis=0)
+    #         return arr
+
+    #     elif self.state_representation == "array":
+    #         return self.game.get_state()
+            
 
 def create_pathfinding_env(id, name, lines, columns, grid_type="free"):
 

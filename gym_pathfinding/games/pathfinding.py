@@ -47,11 +47,10 @@ class PathFindingGame(object):
         return self.get_state()
 
     def get_state(self):
-        """ return a (n, n, 1) grid """
+        """ return a (n, n) grid """
         state = np.array(self.grid, copy=True)
         state[self.player[0], self.player[1]] = 2
         state[self.target[0], self.target[1]] = 3
-        state = state.reshape((state.shape[0], state.shape[1], 1))
         return state
 
 
