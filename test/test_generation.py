@@ -2,7 +2,7 @@
 import pytest
 
 import numpy as np
-from gym_pathfinding.games.grid_generation import path_exists
+from gym_pathfinding.games.gridworld import path_exists
 
 def test_path_exists():
     grid = np.array([
@@ -17,7 +17,7 @@ def test_path_exists():
     assert not path_exists(grid, (1, 1), (3, 5))
 
 
-from gym_pathfinding.games.grid_generation import add_rectangle
+from gym_pathfinding.games.gridworld import add_rectangle
 
 def test_add_rectangle():
     grid = np.array([

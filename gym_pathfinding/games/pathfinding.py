@@ -5,7 +5,7 @@ from queue import PriorityQueue
 import numpy as np
 import scipy.misc
 
-from gym_pathfinding.games.grid_generation import generate_grid
+from gym_pathfinding.games.gridworld import generate_grid, is_legal, MOUVEMENT
 
 class PathFindingGame(object):
     """
@@ -76,13 +76,6 @@ class PathFindingGame(object):
 
     def step_return(self, reward):
         return self.get_state(), reward, self.terminal, ""
-
-
-# North, South, East, West
-MOUVEMENT = [(0, -1), (0, 1), (1, 0), (-1, 0)]
-
-def is_legal(grid, next_i, next_j):
-    return grid[next_i, next_j] == 0
 
 
 

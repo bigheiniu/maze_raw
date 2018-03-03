@@ -115,7 +115,7 @@ def add_rectangle(grid, rectangle):
 
 
 # North, South, East, West
-MOUVEMENT = [(0, -1), (0, 1), (1, 0), (-1, 0)]
+MOUVEMENT = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
 def is_legal(grid, next_x, next_y):
     return grid[next_x, next_y] == 0
