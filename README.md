@@ -3,7 +3,7 @@
 An OpenAI Gym implementation for the pathfinding problem.
 
 <p align="center">
-   <img src="./env_examples.png" alt="env-examples" width="500" height="550">
+   <img src="./env_examples.png" alt="env-examples" width="70%">
 </p>
 
 ## Installation
