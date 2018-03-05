@@ -50,15 +50,16 @@ class PartiallyObservablePathFindingEnv(gym.Env):
     
 def partial_grid(grid, center, observable_depth):
     """return the centered partial state, place -1 to non-visible cells"""
-
+    
     i, j = center
     offset = observable_depth
 
     mask = np.ones_like(grid, dtype=bool)
     mask[max(0, i - offset): i + offset + 1, max(0, j - offset): j + offset + 1] = False
 
-    grid[mask] = -1
-    return grid
+    _grid = np.array(grid, copy=True)
+    _grid[mask] = -1
+    return _grid
 
 def create_partially_observable_pathfinding_env(id, name, lines, columns, observable_depth, *, grid_type="free"):
 
