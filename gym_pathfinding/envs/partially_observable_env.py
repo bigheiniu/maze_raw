@@ -75,7 +75,7 @@ def create_partially_observable_pathfinding_env(id, name, lines, columns, observ
 
 # Create classes 
 
-sizes = list(range(5, 20, 2)) + [25, 35, 55]
+sizes = list(range(9, 20, 2)) + [25, 35, 55]
 envs = [
     create_partially_observable_pathfinding_env(
         id="partially-observable-pathfinding-{type}-{n}x{n}-d{obs}-v0".format(
@@ -90,7 +90,7 @@ envs = [
         observable_depth=obs_depth
     ) 
     for grid_type in ["free", "obstacle", "maze"]
-    for obs_depth in range(1, 10 + 1)
+    for obs_depth in range(2, 10 + 1)
     for size in sizes 
 ]
 
