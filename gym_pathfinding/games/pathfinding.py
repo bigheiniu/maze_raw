@@ -125,9 +125,10 @@ class PathFindingGame(object):
                 # make right turn
                 result[index] = 6
         return result
+
     def add_sign(self, action_planning, path, grid, sign_list):
         # ATTENTION: manupulate ob depth tp 5
-        observable_depth = 5
+        observable_depth = 3
         for timestep in range(len(action_planning)):
             # at the end, pad the episode with the last action
             action = action_planning[timestep]
@@ -139,10 +140,11 @@ class PathFindingGame(object):
             if sign != 0:
                 # 2 up, 3 down, 4 left, 5 right
                 # add sign to where the item can seen and should be in obstacle
-                pos_loc = np.argwhere(_partial_grid == 1)
+                pos_loc = np.argwhere(_partial_grid == 0)
                 np.random.shuffle(pos_loc)
-                grid[pos_loc[0]] = sign
-        print(grid)
+                pos_loc_x = pos_loc[0][0]
+                pos_loc_y = pos_loc[0][1]
+                grid[pos_loc_x, pos_loc_y] = sign
         return grid
 
     def get_state(self):
