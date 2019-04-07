@@ -1,0 +1,7 @@
+/home/bigheiniu/anaconda2/envs/py36/lib/python3.6/site-packages/gym_pathfinding-0.0.1-py3.6.egg
+/home/bigheiniu/anaconda2/envs/py36/bin/cygdb
+/home/bigheiniu/anaconda2/envs/py36/bin/cython
+/home/bigheiniu/anaconda2/envs/py36/bin/cythonize
+/home/bigheiniu/anaconda2/envs/py36/bin/futurize
+/home/bigheiniu/anaconda2/envs/py36/bin/pasteurize
+/home/bigheiniu/anaconda2/envs/py36/bin/chardetect

@@ -96,35 +96,6 @@ class PathFindingGame(object):
     def step_return(self, reward):
         return self.get_state(), reward, self.terminal, ""
 
-    def build_sign(self, action_planning):
-        '''
-        random put a direction sign at the observation area when change direction
-        :param action_planning:
-        :return:
-        '''
-        space = [0]
-        action_wanted = [action_planning[0]]
-        result = np.zeros(len(action_planning), dtype=np.int)
-        for i in range(len(action_planning) - 1):
-            if action_planning[i] != action_planning[i + 1]:
-                space.append(i + 1)
-                action_wanted.append(action_planning[i + 1])
-        for i in range(len(space) - 1):
-            index = np.random.randint(low=space[i], high=space[i + 1], size=1)
-            # 5 left turn
-            # 6 right turn
-            # action: 0 -> up, 1 -> down, 2 -> left, 3 -> right
-            # mouvement = (-1, 0), (1, 0), (0, -1), (0, 1)
-            action_cur = action_wanted[i]
-            action_next = action_wanted[i + 1]
-            if ((action_cur == 2 and action_next == 1) or (action_cur == 1 and action_next == 3) or (
-                    action_cur == 3 and action_next == 0) or (action_cur == 0 and action_next == 2)):
-                # make left turn
-                result[index] = 5
-            else:
-                # make right turn
-                result[index] = 6
-        return result
     def add_sign(self, action_planning, path, grid, sign_list):
         # ATTENTION: manupulate ob depth tp 5
         observable_depth = 5
@@ -153,7 +124,7 @@ class PathFindingGame(object):
         return state
 
     def compute_action_planning(self, grid, start, goal):
-        path = astar(grid, start, goal)
+        path = astar.astar(grid, start, goal)
 
         action_planning = []
         for i in range(len(path) - 1):
